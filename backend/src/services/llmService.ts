@@ -41,7 +41,7 @@ class LLMService {
 
   constructor() {
     if (genAI) {
-      this.model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    this.model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     }
   }
 

@@ -1,5 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { chatService } from '../../src/lib/services/chatService.js';
+import { chatService } from '../../../lib/services/chatService.js';
 import { z } from 'zod';
 
 const messageSchema = z.object({
@@ -7,22 +7,9 @@ const messageSchema = z.object({
   sessionId: z.string().optional()
 });
 
-export const POST: RequestHandler = async (event) => {
+export const POST: RequestHandler = async ({ request }) => {
   try {
-    if (!event.request) {
-      return new Response(
-        JSON.stringify({ 
-          error: 'Invalid request',
-          message: 'Request object is missing'
-        }),
-        { 
-          status: 400,
-          headers: { 'Content-Type': 'application/json' }
-        }
-      );
-    }
-    
-    const body = await event.request.json();
+    const body = await request.json();
     const validation = messageSchema.safeParse(body);
     
     if (!validation.success) {
