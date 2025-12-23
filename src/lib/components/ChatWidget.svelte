@@ -1,11 +1,22 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { marked } from 'marked';
 
   interface Message {
     id: string;
     sender: 'user' | 'ai';
     text: string;
     timestamp: Date;
+  }
+
+  // Configure marked for safe rendering
+  marked.setOptions({
+    breaks: true,
+    gfm: true
+  });
+
+  function renderMarkdown(text: string): string {
+    return marked.parse(text) as string;
   }
 
   let messages: Message[] = [];
@@ -46,6 +57,7 @@
     isLoading = true;
 
     try {
+      console.log(API_BASE);
       const response = await fetch(`${API_BASE}/chat/message`, {
         method: 'POST',
         headers: {
@@ -56,7 +68,7 @@
           sessionId: sessionId
         })
       });
-
+      console.log(response);
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || errorData.error || 'Failed to send message');
@@ -147,7 +159,13 @@
     {#each messages as message (message.id)}
       <div class="message message-{message.sender}">
         <div class="message-content">
-          <div class="message-text">{message.text}</div>
+          <div class="message-text">
+            {#if message.sender === 'ai'}
+              {@html renderMarkdown(message.text)}
+            {:else}
+              {message.text}
+            {/if}
+          </div>
           <div class="message-time">
             {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </div>
@@ -330,6 +348,60 @@
   .message-text {
     line-height: 1.5;
     white-space: pre-wrap;
+  }
+
+  /* Markdown styling for AI messages */
+  .message-ai .message-text :global(strong),
+  .message-ai .message-text :global(b) {
+    font-weight: 600;
+  }
+
+  .message-ai .message-text :global(em),
+  .message-ai .message-text :global(i) {
+    font-style: italic;
+  }
+
+  .message-ai .message-text :global(ul),
+  .message-ai .message-text :global(ol) {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .message-ai .message-text :global(li) {
+    margin: 0.25rem 0;
+  }
+
+  .message-ai .message-text :global(p) {
+    margin: 0.5rem 0;
+  }
+
+  .message-ai .message-text :global(p:first-child) {
+    margin-top: 0;
+  }
+
+  .message-ai .message-text :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .message-ai .message-text :global(code) {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+    font-family: 'Courier New', monospace;
+  }
+
+  .message-ai .message-text :global(pre) {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 0.75rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 0.5rem 0;
+  }
+
+  .message-ai .message-text :global(pre code) {
+    background: none;
+    padding: 0;
   }
 
   .message-time {

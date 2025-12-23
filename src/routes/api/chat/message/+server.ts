@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 const messageSchema = z.object({
   message: z.string().min(1).max(5000),
-  sessionId: z.string().optional()
+  sessionId: z.string().nullable().optional()
 });
 
 export const POST: RequestHandler = async ({ request }) => {
@@ -27,7 +27,10 @@ export const POST: RequestHandler = async ({ request }) => {
 
     const { message, sessionId } = validation.data;
     
-    const result = await chatService.handleMessage(message, sessionId);
+    // Convert null to undefined for the service
+    const sessionIdOrUndefined = sessionId ?? undefined;
+    
+    const result = await chatService.handleMessage(message, sessionIdOrUndefined);
     
     return new Response(
       JSON.stringify(result),

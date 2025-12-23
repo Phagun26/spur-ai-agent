@@ -1,9 +1,11 @@
 import sqlite3 from 'sqlite3';
 import path from 'path';
 import { existsSync, mkdirSync } from 'fs';
+import 'dotenv/config';
 
 // For Vercel serverless: use /tmp for writable database
 // For local development: use ./data/chat.db
+// dotenv loads .env file from root directory
 const isVercel = process.env.VERCEL === '1';
 const DB_PATH = isVercel 
   ? '/tmp/chat.db'

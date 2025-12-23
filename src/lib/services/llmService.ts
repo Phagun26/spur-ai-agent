@@ -1,9 +1,13 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import 'dotenv/config';
 
+// Get API key from environment variables
+// dotenv loads .env file from root directory
 const API_KEY = process.env.GOOGLE_AI_API_KEY;
 
 if (!API_KEY) {
   console.warn('⚠️  GOOGLE_AI_API_KEY not set. LLM features will not work.');
+  console.warn('   Make sure .env file exists in the root directory with GOOGLE_AI_API_KEY');
 }
 
 const genAI = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
