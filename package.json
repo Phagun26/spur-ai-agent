@@ -10,13 +10,16 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
-    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/adapter-vercel": "^5.0.0",
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "svelte": "^4.2.7",
     "sqlite3": "^5.1.7",
     "uuid": "^9.0.1",
     "zod": "^3.22.4"
+  },
+  "engines": {
+    "node": "20.x"
   },
   "devDependencies": {
     "@types/node": "^20.10.6",
