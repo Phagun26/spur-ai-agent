@@ -1,5 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { chatService } from '../../../../lib/services/chatService.js';
+import { chatService } from '../../../../../lib/services/chatService.js';
 
 export const GET: RequestHandler = async ({ params }) => {
   try {

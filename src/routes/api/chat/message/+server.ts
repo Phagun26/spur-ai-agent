@@ -1,5 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { chatService } from '../../../lib/services/chatService.js';
+import { chatService } from '../../../../lib/services/chatService.js';
 import { z } from 'zod';
 
 const messageSchema = z.object({
