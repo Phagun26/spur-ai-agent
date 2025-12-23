@@ -11,6 +11,6 @@
     "strict": true,
     "moduleResolution": "bundler"
   },
-  "include": ["src/**/*", "api/**/*"]
+  "include": ["src/**/*"]
 }
 
